@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# print out program usage
+function print_usage
+{
+  echo "Usage: ./download_simpson [-d /download_directory/]"
+}
+
+# check command line arguments
+function sanity_check
+{
+if [[ "$#" -gt "2" || "$#" == "1" || "$#" -lt "1" ]]; then
+  print_usage
+	exit
+fi
+}
+
+# see if html2text installed
+function verify_dependency
+{
+  echo "Checking if necessary packages installed..."
+  if [ $(dpkg-query -W -f='${Status}' html2text 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    sudo apt-get --yes install --no-upgrade html2text
+  fi
+  echo "Verified 'html2text'"
+  echo
+}
+
+# checks if directory exists
+function check_directory
+{
+if [ ! -d "$specified_directory" ]; then
+	echo "Error: Invalid/Non-Existent Directory"
+	exit
+fi
+}
+
+
+# download the goods
+function download_simpson_text
+{
+  echo
+  echo "Saving to: $specified_directory"
+
+	echo "Starting Download..."
+	echo
+	url_base="http://simpson.walraven.org/"
+	echo "Downloading From: $url_base"
+	echo
+
+	array_dates=( 01 02 03 04 05 08 09 10 11 12 15 16 )
+	for date in "${array_dates[@]}"
+	do
+		url_path="may$date.html"
+		echo "Saving $url_base$url_path as may$date.txt"
+		curl -s "$url_base$url_path" | html2text > "$specified_directory//may$date.txt"
+	done
+
+  echo
+	echo "Download Complete ✌"
+}
+
+
+# download simpson court trial from May 01-16 to specified directory
+sanity_check ${@}
+
+if [ "$1" == "-d" ]; then
+	specified_directory="$2"
+	check_directory
+
+  verify_dependency
+
+	download_simpson_text
+else
+	print_usage
+	exit
+fi
