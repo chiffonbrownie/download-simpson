@@ -57,7 +57,7 @@ function download_simpson_text
 	done
 
 	echo
-		echo "Download Complete ✌"
+	echo "Download Complete ✌"
 }
 
 
