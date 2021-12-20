@@ -63,13 +63,10 @@ function download_simpson_text
 
 # download simpson court trial from May 01-16 to specified directory
 sanity_check ${@}
-
 if [ "$1" == "-d" ]; then
 	specified_directory="$2"
 	check_directory
-
 	verify_dependency
-
 	download_simpson_text
 else
 	print_usage
