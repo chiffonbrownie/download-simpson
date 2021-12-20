@@ -3,14 +3,14 @@
 # print out program usage
 function print_usage
 {
-  echo "Usage: ./download_simpson [-d /download_directory/]"
+	echo "Usage: ./download_simpson [-d /download_directory/]"
 }
 
 # check command line arguments
 function sanity_check
 {
 if [[ "$#" -gt "2" || "$#" == "1" || "$#" -lt "1" ]]; then
-  print_usage
+	print_usage
 	exit
 fi
 }
@@ -18,29 +18,29 @@ fi
 # see if html2text installed
 function verify_dependency
 {
-  echo "Checking if necessary packages installed..."
-  if [ $(dpkg-query -W -f='${Status}' html2text 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-    sudo apt-get --yes install --no-upgrade html2text
-  fi
-  echo "Verified 'html2text'"
-  echo
+	echo "Checking if necessary packages installed..."
+	if [ $(dpkg-query -W -f='${Status}' html2text 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+		sudo apt-get --yes install --no-upgrade html2text
+	fi
+	echo "Verified 'html2text'"
+	echo
 }
 
 # checks if directory exists
 function check_directory
 {
-if [ ! -d "$specified_directory" ]; then
-	echo "Error: Invalid/Non-Existent Directory"
-	exit
-fi
+	if [ ! -d "$specified_directory" ]; then
+		echo "Error: Invalid/Non-Existent Directory"
+		exit
+	fi
 }
 
 
 # download the goods
 function download_simpson_text
 {
-  echo
-  echo "Saving to: $specified_directory"
+	echo
+	echo "Saving to: $specified_directory"
 
 	echo "Starting Download..."
 	echo
@@ -56,8 +56,8 @@ function download_simpson_text
 		curl -s "$url_base$url_path" | html2text > "$specified_directory//may$date.txt"
 	done
 
-  echo
-	echo "Download Complete ✌"
+	echo
+		echo "Download Complete ✌"
 }
 
 
@@ -68,7 +68,7 @@ if [ "$1" == "-d" ]; then
 	specified_directory="$2"
 	check_directory
 
-  verify_dependency
+	verify_dependency
 
 	download_simpson_text
 else
